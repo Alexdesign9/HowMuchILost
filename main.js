@@ -1,6 +1,12 @@
+function isValidNumber() {
+    if (this.value.match('[^0-9]')) {
+        this.value = this.value.substring(0, this.value.length - 1);
+    }
+}
 function isNeedNewRow() {
     if (this.value) {
         deleteOnChangeAttribute(this);
+        deleteGreenRows();
         createNewRow();
     }
 }
@@ -18,14 +24,12 @@ function createNewRow() {
     for (let i = 0; i < 3; i++) {
         let cell = row.insertCell(),
             input = document.createElement("input");
+        input.setAttribute('type', 'text');
         input.setAttribute('onchange', 'isNeedNewRow.apply(this)');
         if (i < 2) {
-            input.setAttribute('type', 'text');
             input.setAttribute('maxlength', '10');
         } else {
-            input.setAttribute('type', 'number');
-            input.setAttribute('min', '0');
-            input.setAttribute('step', '50');
+            input.setAttribute('oninput', 'isValidNumber.apply(this)');
         }
         cell.appendChild(input);
 
